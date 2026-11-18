@@ -1,153 +1,247 @@
-# Fuzzy Logic and Neural Network Based Customer Churn Prediction
+# 🌐 Fuzzy Random Forest for Customer Churn Prediction
 
-A Customer Churn Prediction project exploring Fuzzy Logic, Random Forest, and Neural Network techniques to analyze customer behavior and predict the likelihood of customer attrition.
+A Machine Learning project that integrates **Fuzzy Logic with Random Forest** for customer churn prediction and risk assessment across three datasets: Telco, Bank, and Telecom.
 
-## 📌 Project Overview
+The project compares a baseline Random Forest model with a Fuzzy-enhanced Random Forest model by generating fuzzy membership features and incorporating them into the training process. It also categorizes customers into different churn risk levels based on predicted probabilities.
 
-Customer churn is a major challenge for businesses, particularly in industries where customer retention plays an important role in long-term growth.
+---
 
-This project focuses on developing an intelligent customer churn prediction approach by exploring machine learning, fuzzy logic, and neural network techniques.
+## 🎯 Project Overview
 
-The project investigates how these techniques can be used to analyze customer-related data, identify potential churn patterns, and support data-driven customer retention strategies.
+This project explores how fuzzy feature engineering can be combined with traditional machine learning to analyze customer churn behavior.
 
-## 🎯 Project Objectives
+The notebook implements a complete machine learning pipeline, including:
 
-- Analyze customer data to identify potential churn patterns.
-- Explore Random Forest for customer churn prediction.
-- Apply Fuzzy Logic to handle uncertainty and imprecise customer-related information.
-- Explore Neural Network techniques for learning complex patterns in customer data.
-- Evaluate predictive performance using appropriate evaluation metrics.
-- Investigate how intelligent computational techniques can support customer retention decisions.
+1. Data Loading and Inspection
+2. Exploratory Data Analysis (EDA)
+3. Data Cleaning and Missing Value Handling
+4. Data Preprocessing and Feature Transformation
+5. Fuzzy Membership Function Design
+6. Fuzzy Feature Generation
+7. Baseline Random Forest Model Training
+8. Fuzzy Random Forest Model Training
+9. Model Performance Comparison
+10. Customer Churn Risk Assessment
+11. Feature Importance Analysis
+12. Conclusion and Recommendations
 
-## 🧠 Methodology
+---
 
-The project explores the following computational approaches:
+## 📊 Datasets
 
-### 1. Random Forest
+Three customer churn datasets were used for experimentation.
 
-Random Forest is an ensemble learning algorithm that combines multiple decision trees to improve prediction performance.
+| Dataset | Records | Target Variable |
+|---|---:|---|
+| Telco Customer Churn | 7,043 | `Churn` |
+| Bank Customer Churn | 10,000 | `churn` |
+| Telecom Churn | 243,553 | `churn` |
 
-In this project, it is explored for:
-- Customer churn classification.
-- Identifying important customer-related features.
-- Learning patterns from structured customer data.
+**Dataset Files:**
+- `WA_Fn-UseC_-Telco-Customer-Churn.csv`
+- `Bank Customer Churn Prediction.csv`
+- `telecom_churn.csv`
 
-### 2. Fuzzy Logic
+> **Note:** Dataset files are not included in this repository. Download them separately and place them in the project root directory, or update the file paths in the notebook.
 
-Fuzzy Logic is used to represent uncertainty and handle information that cannot always be described using strict binary values.
+---
 
-Its potential applications in this project include:
-- Representing uncertain customer behavior.
-- Defining fuzzy membership concepts.
-- Supporting decision-making through fuzzy rules.
-- Handling imprecise customer characteristics.
+## ⚙️ Methodology
 
-### 3. Neural Network
+### 1. Data Cleaning and Preprocessing
 
-Neural Networks are computational models inspired by the structure of the human brain. They can learn complex relationships and patterns from data.
+- Removed unnecessary whitespace from column values.
+- Converted `TotalCharges` into numeric format for the Telco dataset.
+- Removed unnecessary ID columns.
+- Handled missing values using median imputation for numerical features and mode imputation for categorical features.
+- Applied `StandardScaler` to numerical features.
+- Applied `OneHotEncoder` to categorical features using `ColumnTransformer`.
 
-In this project, neural network techniques are explored for:
-- Learning customer behavior patterns.
-- Modeling relationships among customer features.
-- Predicting customer churn.
+### 2. Fuzzy Logic Integration
 
-*Note: The exact model architecture and integration strategy should be documented according to the implemented notebook.*
+Fuzzy Logic was integrated into the feature engineering stage to represent selected numerical attributes through membership degrees ranging from 0 to 1.
 
-## 🔄 Project Workflow
+The following membership functions were implemented:
 
-1. Dataset loading and exploration.
-2. Data preprocessing and preparation.
-3. Feature analysis and selection.
-4. Application of the selected computational techniques.
-5. Model training and prediction.
-6. Performance evaluation.
-7. Comparison and analysis of experimental results.
+- Triangular Membership Function
+- Left Shoulder Membership Function
+- Right Shoulder Membership Function
 
-## 🛠️ Technologies and Tools
+**Selected Fuzzy Features:**
 
-- **Programming Language:** Python
-- **Development Environment:** Google Colab / Jupyter Notebook
-- **Data Processing:** Pandas, NumPy
-- **Data Visualization:** Matplotlib, Seaborn
-- **Machine Learning:** Scikit-learn
-- **Neural Network:** [Add the framework used, if applicable]
-- **Fuzzy Logic:** [Add the fuzzy logic library or implementation approach used]
+| Dataset | Selected Features |
+|---|---|
+| Telco | `tenure`, `MonthlyCharges` |
+| Bank | `credit_score`, `age` |
+| Telecom | `age`, `data_used` |
 
-## 📊 Model Evaluation
+The generated fuzzy membership values were combined with the preprocessed input features before training the Fuzzy Random Forest model.
 
-Model performance can be evaluated using relevant classification metrics, including:
+### 3. Machine Learning Models
+
+Two approaches were implemented and compared:
+
+- **Baseline Random Forest:** Trained using the original preprocessed features.
+- **Fuzzy Random Forest:** Trained using the original preprocessed features combined with generated fuzzy membership features.
+
+**Model Configuration:**
+- Algorithm: `RandomForestClassifier`
+- Train-Test Split: 70:30
+- Stratified Sampling: Enabled
+- Random State: 42
+
+### 4. Evaluation Metrics
+
+The models were evaluated using:
 
 - Accuracy
 - Precision
 - Recall
 - F1-Score
+- ROC-AUC
 - Confusion Matrix
-- ROC-AUC (if used)
 
-Actual experimental results and model comparisons will be documented here after adding the verified results from the project notebook.
+---
 
-## 📂 Project Structure
+## 📈 Experimental Results
 
-```text
-Fuzzy-Logic-Neural-Network-Customer-Churn-Prediction/
-│
-├── README.md
-│
-├── notebooks/
-│   └── customer_churn_prediction.ipynb
-│
-├── dataset/
-│   └── dataset files (if permitted)
-│
-└── results/
-    └── evaluation results and visualizations
+The following table presents the performance comparison between the baseline and fuzzy-enhanced approaches.
+
+| Dataset | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|---|---|---:|---:|---:|---:|---:|
+| Telco | Baseline RF | 0.7837 | 0.6171 | 0.4884 | 0.5453 | 0.8131 |
+| Telco | Fuzzy RF | 0.7795 | 0.6063 | 0.4831 | 0.5377 | 0.8174 |
+| Bank | Baseline RF | 0.8633 | 0.7799 | 0.4583 | 0.5773 | 0.8600 |
+| Bank | Fuzzy RF | 0.8640 | 0.7812 | 0.4615 | 0.5802 | 0.8589 |
+| Telecom | Baseline RF | 0.7991 | 0.2203 | 0.0009 | 0.0018 | 0.4985 |
+| Telecom | Fuzzy RF | 0.7990 | 0.2174 | 0.0010 | 0.0020 | 0.4980 |
+
+### 🔍 Key Observations
+
+- Fuzzy feature integration resulted in relatively small performance changes across the three datasets.
+- The Telco dataset showed a slight ROC-AUC improvement with the Fuzzy Random Forest approach.
+- The Bank dataset showed marginal improvements in accuracy, precision, recall, and F1-score, while ROC-AUC decreased slightly.
+- Both models struggled to identify churn cases in the Telecom dataset, despite achieving approximately 80% accuracy.
+- Low churn-class recall highlights the impact of class imbalance on model performance.
+
+These findings indicate that fuzzy feature integration does not necessarily improve every evaluation metric or dataset.
+
+---
+
+## 🚦 Customer Churn Risk Assessment
+
+In addition to binary churn prediction, the project introduces a customer risk categorization approach based on predicted churn probabilities.
+
+| Risk Level | Probability Range |
+|---|---|
+| 🟢 Low Risk | ≤ 0.30 |
+| 🟡 Medium Risk | > 0.30 and ≤ 0.70 |
+| 🔴 High Risk | > 0.70 |
+
+This approach provides an additional interpretation layer to help identify customers who may require retention-focused attention.
+
+---
+
+## 🛠️ Technologies and Tools
+
+**Programming Language:**
+- Python 3
+
+**Libraries:**
+- pandas
+- NumPy
+- scikit-learn
+- imbalanced-learn
+- matplotlib
+- seaborn
+- joblib
+
+**Development Environment:**
+- Google Colab / Jupyter Notebook
+
+---
+
+## 🚀 Installation and Execution
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd <your-repo-folder>
 ```
 
-*The directory structure may be updated according to the actual uploaded project files.*
+### 2. Install Dependencies
 
-## 🚀 How to Run the Project
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn joblib jupyter
+```
 
-### Using Google Colab
+### 3. Prepare the Datasets
 
-1. Clone or download this GitHub repository.
-2. Open [Google Colab](https://colab.research.google.com/).
-3. Upload the project notebook or open it from GitHub.
-4. Upload or connect the required dataset.
-5. Install any required dependencies.
-6. Execute the notebook cells sequentially.
+Download the three CSV datasets and place them in the project root directory.
 
-## 🔍 Expected Applications
+### 4. Launch the Notebook
 
-The project explores how intelligent prediction techniques can support:
+```bash
+jupyter notebook fuzzy_rf_churn_project.ipynb
+```
 
-- Customer retention analysis.
-- Identification of potential churn customers.
-- Customer behavior analysis.
-- Data-driven business decision-making.
+### 5. Run the Notebook
 
-## ⚠️ Limitations
+Execute all cells sequentially, from data loading and preprocessing to model training, evaluation, and customer risk assessment.
 
-- Prediction performance depends on dataset quality and feature selection.
-- Model generalization depends on the training data and evaluation methodology.
-- Fuzzy Logic performance depends on membership functions and rule design.
-- Further validation may be required before real-world business deployment.
+---
+
+## 📁 Project Structure
+
+```text
+Fuzzy-Random-Forest-Customer-Churn/
+│
+├── fuzzy_rf_churn_project.ipynb
+├── README.md
+│
+├── WA_Fn-UseC_-Telco-Customer-Churn.csv
+├── Bank Customer Churn Prediction.csv
+└── telecom_churn.csv
+```
+
+*Note: The dataset files are excluded from the repository and need to be downloaded separately.*
+
+---
+
+## ⚠️ Limitations and Future Work
+
+### Current Limitations
+
+- Fuzzy membership functions are manually defined using descriptive statistics rather than optimized through a learning process.
+- Class imbalance significantly affects churn-class recall, particularly in the Telecom dataset.
+- Fuzzy feature integration produces only marginal performance changes in the current experiments.
+- The Telecom dataset demonstrates very limited churn-class detection performance.
+
+### Future Improvements
+
+- Optimize fuzzy membership functions using data-driven approaches.
+- Explore class imbalance handling techniques such as SMOTE and class weighting.
+- Investigate Adaptive Neuro-Fuzzy Inference Systems (ANFIS).
+- Perform hyperparameter optimization.
+- Compare performance with additional algorithms such as Gradient Boosting and Logistic Regression.
+
+---
 
 ## 👩‍💻 Project Information
 
-**Project Title:** Fuzzy Logic and Neural Network Based Customer Churn Prediction
+**Project Title:** Fuzzy Random Forest for Customer Churn Prediction
 
 **Project Domain:** Artificial Intelligence and Intelligent Computing
 
-**Core Areas:** Fuzzy Logic, Random Forest, Neural Networks, Customer Churn Prediction
+**Core Areas:** Fuzzy Logic, Random Forest, Machine Learning, Feature Engineering, Customer Churn Prediction
 
 **Developer:** Himadree Chowdhury
 
 **GitHub:** [@HimadreeChy](https://github.com/HimadreeChy)
 
+---
+
 ## 📄 License
 
 This project is developed for academic and educational purposes.
-
----
-
-*Exploring intelligent computational approaches for customer churn prediction.*
